@@ -1,0 +1,34 @@
+package com.example.student_management.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+
+/** Swagger UI: http://localhost:8080/swagger-ui.html (use the "Authorize" button with your JWT). */
+@Configuration
+public class OpenApiConfig {
+
+    private static final String SCHEME = "bearerAuth";
+
+    @Bean
+    public OpenAPI studentManagementOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Student Management System API")
+                        .description("REST API with JWT authentication, role-based access, "
+                                + "search, pagination, CSV export and dashboard statistics.")
+                        .version("1.0.0"))
+                .addSecurityItem(new SecurityRequirement().addList(SCHEME))
+                .components(new Components().addSecuritySchemes(SCHEME,
+                        new SecurityScheme()
+                                .name(SCHEME)
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")));
+    }
+}
